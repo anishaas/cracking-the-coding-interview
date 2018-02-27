@@ -2,9 +2,12 @@ package chaptertwo;
 
 import java.util.Hashtable;
 
-/*1.2 Write code to remove duplicates from an unsorted linked list.
+/*2.1 Write code to remove duplicates from an unsorted linked list.
  *How would you solve this problem if a temporary buffer is not allowed?
  */
+
+/*2.2 Implement an algorithm to find the nth to last 
+ * element of a singly linked list*/
 
 public class LinkedLists {
 	
@@ -25,6 +28,31 @@ public class LinkedLists {
 			this.next = next;
 		}
 		
+	}
+	
+	//2.2 nth to last element 
+	public static Node findNthToLast(Node head, int n) {
+		//create two pointers
+		Node p1 = head;
+		Node p2 = head;
+		
+		//distance p2 by n
+		for(int i = 0; i < n - 1; i++) {
+			//check that n is within list size
+			if(p2 == null) {
+				return null;
+			}
+			//move p2
+			p2 = p2.getNext();
+		}
+		
+		//while p2 has not reached the last node
+		while(p2.getNext() != null){
+			//move both p1 and p2 
+			p1 = p1.getNext();
+			p2 = p2.getNext();
+		} 
+		return p1;
 	}
 	
 	//solution with hash table
