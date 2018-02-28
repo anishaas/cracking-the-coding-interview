@@ -1,6 +1,7 @@
 package chaptertwo;
 
 import java.util.Hashtable;
+import java.util.LinkedList;
 
 /*2.1 Write code to remove duplicates from an unsorted linked list.
  *How would you solve this problem if a temporary buffer is not allowed?
@@ -8,6 +9,10 @@ import java.util.Hashtable;
 
 /*2.2 Implement an algorithm to find the nth to last 
  * element of a singly linked list*/
+
+/*Implement an algorithm to delete a node in the middle of a single linked list, 
+ * given only access to that node.
+*/
 
 public class LinkedLists {
 	
@@ -28,6 +33,80 @@ public class LinkedLists {
 			this.next = next;
 		}
 		
+	}
+	
+	//2.4 
+	public static Node addListsRecursive(int carry, Node n1, Node n2) {
+		
+		//base case, no more node data to sum
+		if(n1 == null && n2 == null) {
+			return null; 
+		}
+		LinkedLists l = new LinkedLists();
+		Node result = l.new Node();
+		
+		int value = carry; 
+		//add l1 and l2 data
+		if(n1 != null) {
+			value += n1.data;
+		}
+		if(n2 != null) {
+			value += n2.data;
+		}
+		result.data = value % 10;
+		Node next = addListsRecursive(value >= 10 ? 1 : 0, n1.next, n2.next);
+		result.next = next;
+		
+		return result; 
+	}
+	
+	//2.4 iterative
+	public static Node addListsIterative(Node head, int l1, int l2) {
+		int n1 = 0;
+		int n2 = 0; 
+		int sum = 0;
+		int multiplier = 1;
+		
+		Node current = head;
+		
+		for(int i = 0; i < l1; i++) {
+			int digit = current.data * multiplier;
+			n1 += digit;
+			multiplier *= 10;
+			current = current.next;
+		}
+		
+		multiplier = 1;
+		for(int i = 0; i < l2; i++) {
+			int digit = current.data * multiplier;
+			n1 += digit;
+			multiplier *= 10;
+			current = current.next;
+		}
+		
+		sum = n1 + n2;
+		//populate new head
+		Node currentLast = new Node();
+		int digitToAdd = sum % 10;
+		sum = sum % 10;
+		currentLast.setData(digitToAdd);
+		while(sum > 0) {
+			Node next = new Node();
+			digitToAdd = sum % 10;
+			next.data = digitToAdd;
+			current.next = next;
+			currentLast = next;
+		}
+	}
+	
+	
+	//2.3 delete middle node
+	public static void deleteMiddleNode(Node mid) {
+		if(mid==null || mid.next == null) return;
+		
+		//copy next node's data to mid
+		mid.data = mid.next.data;
+		mid.next = mid.next.next;	
 	}
 	
 	//2.2 nth to last element 
@@ -61,9 +140,12 @@ public class LinkedLists {
 		Node current = head;
 		Node prev = null;
 		while(current != null) {
+			//check for duplicate
 			if(tracker.containsKey(current.getData())) {
+				//remove pointer to current
 				prev.setNext(current.getNext());
 			} else {
+				//add new value 
 				tracker.put(current.getData(), true); 
 				prev = current;
 			}
