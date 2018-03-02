@@ -10,8 +10,12 @@ import java.util.LinkedList;
 /*2.2 Implement an algorithm to find the nth to last 
  * element of a singly linked list*/
 
-/*Implement an algorithm to delete a node in the middle of a single linked list, 
+/*2.3 Implement an algorithm to delete a node in the middle of a single linked list, 
  * given only access to that node.
+*/
+
+/*2.5 Given a circular linked list, implement an algorithm which returns node at 
+ * the beginning of the loop.
 */
 
 public class LinkedLists {
@@ -35,29 +39,54 @@ public class LinkedLists {
 		
 	}
 	
+	//2.5
+	public static Node findBegOfLoop(Node head) {
+		Node p1 = head;
+		Node p2 = head;
+		
+		//find meeting point
+		while(p2.next != null) {
+			p1 = p1.next;
+			p2 = p2.next.next;
+			//check for meeting point
+			if(p1 == p2) {
+				//stop searching
+				break;
+			}
+		}
+		
+		//set p1 to head
+		p1 = head;
+		while(p1 != p2) {
+			p1 = p1.next;
+			p2 = p2.next;
+		}
+		return p1; 
+	}
+	
 	//2.4 
 	public static Node addListsRecursive(int carry, Node n1, Node n2) {
 		
-		//base case, no more node data to sum
-		if(n1 == null && n2 == null) {
-			return null; 
+		//base case
+		if(n2 == null && n2 == null) {
+			return null;
 		}
 		LinkedLists l = new LinkedLists();
 		Node result = l.new Node();
-		
-		int value = carry; 
-		//add l1 and l2 data
+		int value = carry;
 		if(n1 != null) {
 			value += n1.data;
 		}
 		if(n2 != null) {
 			value += n2.data;
 		}
+		//data should be only 1 digit
 		result.data = value % 10;
-		Node next = addListsRecursive(value >= 10 ? 1 : 0, n1.next, n2.next);
+		Node next = l.new Node();
+		next = addListsRecursive(value >= 10 ? 1 : 0, n1.next, n2.next);
 		result.next = next;
 		
-		return result; 
+		return result;
 	}
 	
 	//2.4 iterative
@@ -86,17 +115,20 @@ public class LinkedLists {
 		
 		sum = n1 + n2;
 		//populate new head
-		Node currentLast = new Node();
+		LinkedLists l = new LinkedLists();
+		Node currentLast = l.new Node();
 		int digitToAdd = sum % 10;
 		sum = sum % 10;
 		currentLast.setData(digitToAdd);
+		Node h = currentLast; 
 		while(sum > 0) {
-			Node next = new Node();
+			Node next = l.new Node();
 			digitToAdd = sum % 10;
 			next.data = digitToAdd;
 			current.next = next;
 			currentLast = next;
 		}
+		return h;
 	}
 	
 	
