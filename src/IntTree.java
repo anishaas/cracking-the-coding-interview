@@ -26,13 +26,51 @@ public class IntTree {
 		treeRoot = buildTree(1, numNodes);
 	}
 	
+	public boolean isBalanced(IntTreeNode treeRoot) {
+		return maxDepth(treeRoot) - minDepth(treeRoot) > 1;
+	}
+	
+	private int maxDepth(IntTreeNode root) {
+		if(root==null) {
+			return 0;
+		}
+		return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+	}
+	
+	//return max level of both subtrees
+	private int minDepth(IntTreeNode root) {
+		if(root==null) {
+			return 0;
+		}
+		//return min level of both subtrees
+		return Math.min(minDepth(root.left), minDepth(root.right));
+	}
+	
+	public int sumTree(IntTreeNode treeRoot) {
+		int sum = 0;
+		if(treeRoot==null) {
+			return 0;
+		} else {
+			sum = sum(treeRoot);
+		}
+		return sum;
+	}
+	
+	private int sum(IntTreeNode root) {
+		int sum = 0;
+		sum += root.data;
+		sum += sum(root.left);
+		sum += sum(root.right);
+		return sum;
+	}
+	
 	//pass the root of subtree being constructed, pass tree total nodes
 	private IntTreeNode buildTree(int currentRoot, int numNodes) {
 		//tree has reached numNodes already
 		if(currentRoot > numNodes) {
 			return null;
 		} else {
-			//create subtree left and right
+			//build out left subtree
 			IntTreeNode left = buildTree(2 * currentRoot, numNodes);
 			IntTreeNode right = buildTree(2 * currentRoot + 1, numNodes);
 			//constructor call
