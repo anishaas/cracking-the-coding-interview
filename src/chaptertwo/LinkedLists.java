@@ -54,7 +54,6 @@ public class LinkedLists {
 				break;
 			}
 		}
-		
 		//set p1 to head
 		p1 = head;
 		while(p1 != p2) {
