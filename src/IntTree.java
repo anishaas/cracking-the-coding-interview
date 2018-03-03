@@ -1,5 +1,5 @@
 
-public class BinaryTrees {
+public class IntTree {
 	
 	class IntTreeNode {
 		public int data;
@@ -18,6 +18,26 @@ public class BinaryTrees {
 			this.right = right;
 		}
 		
+	}
+	
+	IntTreeNode treeRoot;
+	
+	public IntTree(int numNodes) {
+		treeRoot = buildTree(1, numNodes);
+	}
+	
+	//pass the root of subtree being constructed, pass tree total nodes
+	private IntTreeNode buildTree(int currentRoot, int numNodes) {
+		//tree has reached numNodes already
+		if(currentRoot > numNodes) {
+			return null;
+		} else {
+			//create subtree left and right
+			IntTreeNode left = buildTree(2 * currentRoot, numNodes);
+			IntTreeNode right = buildTree(2 * currentRoot + 1, numNodes);
+			//constructor call
+			return new IntTreeNode(currentRoot, left, right);
+		}
 	}
 	
 	//pre-order traversal
