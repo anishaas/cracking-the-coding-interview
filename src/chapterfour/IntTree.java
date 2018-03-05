@@ -1,3 +1,4 @@
+package chapterfour;
 
 public class IntTree {
 	
@@ -26,24 +27,26 @@ public class IntTree {
 		treeRoot = buildTree(1, numNodes);
 	}
 	
+	public int countNodes(IntTreeNode root) {
+		if(root==null) return 0;
+		return 1 + countNodes(root.left) + countNodes(root.right);
+	}
+	
 	public boolean isBalanced(IntTreeNode treeRoot) {
-		return maxDepth(treeRoot) - minDepth(treeRoot) > 1;
+		return (maxDepth(treeRoot) - minDepth(treeRoot) <= 1);
 	}
 	
 	private int maxDepth(IntTreeNode root) {
-		if(root==null) {
-			return 0;
-		}
-		return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+		//subtree is empty
+		if(root==null) return 0;
+		//return max level 
+		return(1 + Math.max(maxDepth(root.left), maxDepth(root.right)));
 	}
-	
-	//return max level of both subtrees
+
 	private int minDepth(IntTreeNode root) {
-		if(root==null) {
-			return 0;
-		}
-		//return min level of both subtrees
-		return Math.min(minDepth(root.left), minDepth(root.right));
+		if(root==null) return 0;
+		//return min level
+		return(1 + Math.min( minDepth(root.left), minDepth(root.right)));
 	}
 	
 	public int sumTree(IntTreeNode treeRoot) {
