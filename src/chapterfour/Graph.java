@@ -7,7 +7,7 @@ import java.util.LinkedList;
 public class Graph {
 	
 	//HashMap for lookup by id
-	private HashMap<Integer, Node> nodeLookup = new HashMap<Integer, Node>;
+	private HashMap<Integer, Node> nodeLookup = new HashMap<Integer, Node>();
 	
 	public static class Node {
 		private int id;
@@ -22,9 +22,10 @@ public class Graph {
 	
 	private Node getNode(int id) {
 		Node result = nodeLookup.get(id);
+		return result;
 	}
 	
-	private Node addEdge(int source, int destination) {
+	private void addEdge(int source, int destination) {
 		Node s = getNode(source);
 		Node d = getNode(destination);
 		//add destination to source's neighbors
@@ -60,4 +61,31 @@ public class Graph {
 		return false;
 	}
 	
+	//need a queue 
+	public boolean hasPathBreadthSearch(Node source, Node destination) {
+		LinkedList<Node> visitQueue = new LinkedList<Node>();
+		HashSet<Integer> visited = new HashSet<Integer>();
+		//add current node to queue
+		visitQueue.add(source);
+		
+		while(!visitQueue.isEmpty()) {
+			Node node = visitQueue.remove();
+			if(node == destination) {
+				return true;
+			}
+			
+			//move to next node in the queue
+			if(visited.contains(node.id)) {
+				continue;
+			}
+			
+			visited.add(node.id);
+			
+			//add node's children to the queue
+			for (Node child : node.adjacent) {
+				visitQueue.add(child);
+			}
+		}
+		return false;
+	}
 }
