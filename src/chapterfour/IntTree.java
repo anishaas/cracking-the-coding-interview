@@ -2,6 +2,7 @@ package chapterfour;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Queue;
 
 public class IntTree {
 	
@@ -24,7 +25,26 @@ public class IntTree {
 		
 	}
 	
-	IntTreeNode treeRoot;
+	
+	public static void main(String args[]) {
+		IntTree tree = new IntTree();
+		int [] arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+		IntTreeNode head = createTree(arr);
+		System.out.println("Display binary tree: ");
+		printTree(head);
+		System.out.println();
+		
+		System.out.println();
+		System.out.println("Display each level of tree: ");
+		ArrayList<LinkedList<IntTreeNode>> result = new ArrayList<LinkedList<IntTreeNode>>();
+		result = listNodesAtDepth(head);
+		for(LinkedList<IntTreeNode> l : result) {
+			for(IntTreeNode n : l) {
+				System.out.print(n.data + " ");
+			}
+			System.out.println();
+		}
+	}
 	
 //	4.5 Write an algorithm to find the ‘next’ node (i.e., in-order successor) of a 
 //	given node in a binary search tree where each node has a link to its parent.
@@ -32,52 +52,38 @@ public class IntTree {
 //	4.4 Given a binary search tree, design an algorithm which creates a linked list of all
 //	the nodes at each depth.
 	
-	public static ArrayList<LinkedList<IntTreeNode>> listNodesAtDepth(IntTreeNode node) {
+	public static ArrayList<LinkedList<IntTreeNode>> listNodesAtDepth(IntTreeNode root) {
 		ArrayList<LinkedList<IntTreeNode>> lists = new ArrayList<LinkedList<IntTreeNode>>();
 		LinkedList<IntTreeNode> list = new LinkedList<IntTreeNode>();
-		list.add(node);
-		//list index
+		list.add(root);
 		int level = 0;
-		while(list.size() > 0) {
-			LinkedList<IntTreeNode> list = new LinkedList<IntTreeNode>();
-			int numChildren = lists.get(level).size();
-			for(int i = 0; i < numChildren; i++) {
-				//retrieve child node 
+		lists.add(level, list);
+		
+		while(!list.isEmpty()) {
+		//list for the next level
+		list = new LinkedList<IntTreeNode>();
+		int numInLevel = lists.get(level).size();
+		//get all children for all in current list
+			for(int i = 0; i < numInLevel; i++) {
 				IntTreeNode n = lists.get(level).get(i);
-				if(n!=null) {
-					if (n.left != null) {
-						list.add(n.left);
-					}
-					if(n.right != null) {
-						list.add(n.right);
-					}
+				if(n.left!=null) {
+					list.add(n.left);
 				}
-				if(list.size() > 0) {
-					lists.add(level, list);
-					//leaf nodes reached
-				} else {
-					break;
+				if(n.right!=null) {
+					list.add(n.right);
 				}
 			}
 			level++;
+			//add level's list
+			if(list.size()>0) {
+				lists.add(level, list);
+			}
 		}
-		return lists; 
-			//keep track of how many children at each level
-			//b/c need to access every child's left and right
-			
-			//store each child
-			
-			//make a new list
-			
-			//add each child's children
-			
-			//create new list with previous list's nodes
-			
-			//when the list is empty, that means there were no children on that level
+		return lists;
 	}
 	
-	public static void createTree(int [] arr) {
-		createTree(arr, 0, arr.length - 1);
+	public static IntTreeNode createTree(int [] arr) {
+		return createTree(arr, 0, arr.length - 1);
 	}
 	
 	private static IntTreeNode createTree(int [] arr, int beg, int end) {
@@ -114,4 +120,34 @@ public class IntTree {
 		return 1 + Math.min(minDepth(node.left), minDepth(node.right));
 	}
 
+	public static void printTree(IntTreeNode root) {
+		if(root==null) 
+			return;
+		Queue<IntTreeNode> q = new LinkedList<IntTreeNode>();
+		q.add(root);
+		//use null as delimiter
+		q.add(null);
+		while(!q.isEmpty()) {
+			//want to retrieve null, use poll 
+			root = q.poll();
+			if(root != null) {
+				//print root
+				System.out.print(root.data + " ");
+				//add left and right to queue
+				if(root.left != null) {
+					q.add(root.left);
+				}
+				if(root.right != null) {
+					q.add(root.right);
+				}
+				//reached delimiter in queue, print new line
+			} else {
+				if(!q.isEmpty()) {
+					System.out.println();
+					//add null back at the end of the queue
+					q.add(null);
+				}
+			}
+		}
+	}
 }
