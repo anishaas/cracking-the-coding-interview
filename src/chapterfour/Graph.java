@@ -10,14 +10,14 @@ public class Graph {
 	private HashMap<Integer, Node> nodeLookup = new HashMap<Integer, Node>();
 	
 	public static class Node {
+		//variable to identify node
 		private int id;
-		//all neighboring Nodes
+		//variable to store adjacent nodes
 		LinkedList<Node> adjacent = new LinkedList<Node>();
 		
-		private Node(int id){
+		private Node(int id) {
 			this.id = id;
 		}
-		
 	}
 	
 	private Node getNode(int id) {
@@ -32,60 +32,58 @@ public class Graph {
 		s.adjacent.add(d);
 	}
 	
-	//check for path between two nodes
-	public boolean hasPathDepthSearch(int source, int destination) {
-		//keep track of visited nodes to avoid re-processing
+	//depth first
+	public boolean hasPathDepthFirst(int source, int destination) {
+		Node s = getNode(source);
+		Node d = getNode(destination);
+		//hash map to track visited nodes
 		HashSet<Integer> visited = new HashSet<Integer>();
-		Node s = nodeLookup.get(source);
-		Node d = nodeLookup.get(destination);
-		return hasPathHelper(s, d, visited);
+		return hasPathDepthFirst(s, d, visited);
 	}
 	
-	private boolean hasPathHelper(Node s, Node d, HashSet<Integer> visited) {
-		if(visited.contains(s.id)) return false;
-		
-		//update visited with current node
-		visited.add(s.id);
-		
-		//check if destination node reached
-		if(s == d) return true;
-		
-		//check each child
-		for(Node n : s.adjacent) {
-			if (hasPathHelper(n, d, visited)) {
-				return true;
+	private boolean hasPathDepthFirst(Node source, Node destination, HashSet<Integer> visited) {
+		//node previously checked for path
+		if(visited.contains(source.id)) {
+			return false; 
+		}
+		//add source to visited
+		visited.add(source.id);
+		//check source == destination
+		if(source == destination) 
+			return true;
+		for(Node c: source.adjacent) {
+			if(hasPathDepthFirst(c, destination, visited)) {
+				return true; 
 			}
 		}
-		
-		//all children checked, no path, return false
-		return false;
+		//no children == destination
+		return false; 
 	}
 	
-	//need a queue 
-	public boolean hasPathBreadthSearch(Node source, Node destination) {
-		LinkedList<Node> visitQueue = new LinkedList<Node>();
+	
+	//breadth first
+	public boolean hasPathBreadthFirst(Node source, Node destination) {
+		//trackers
 		HashSet<Integer> visited = new HashSet<Integer>();
-		//add current node to queue
-		visitQueue.add(source);
+		LinkedList<Node> nextToVisit = new LinkedList<Node>();
 		
-		while(!visitQueue.isEmpty()) {
-			Node node = visitQueue.remove();
-			if(node == destination) {
+		nextToVisit.add(source);
+		
+		while(!nextToVisit.isEmpty()) {
+			Node node = nextToVisit.remove();
+			if(node == destination)
 				return true;
-			}
 			
-			//move to next node in the queue
-			if(visited.contains(node.id)) {
-				continue;
-			}
+			if(visited.contains(node.id))
+					continue;
 			
 			visited.add(node.id);
 			
-			//add node's children to the queue
-			for (Node child : node.adjacent) {
-				visitQueue.add(child);
+			//queue neighbors
+			for(Node neighbor : node.adjacent) {
+				nextToVisit.add(neighbor);
 			}
 		}
-		return false;
+		return false; 
 	}
 }
