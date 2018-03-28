@@ -10,9 +10,9 @@ public class Graph {
 	private HashMap<Integer, Node> nodeLookup = new HashMap<Integer, Node>();
 	
 	public static class Node {
-		//variable to identify node
+		//identify node
 		private int id;
-		//variable to store adjacent nodes
+		//store adjacent nodes
 		LinkedList<Node> adjacent = new LinkedList<Node>();
 		
 		private Node(int id) {
