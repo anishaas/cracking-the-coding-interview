@@ -17,7 +17,23 @@ public class Graph {
 		private List<Vertex> adjacent;
 		
 		public Vertex(int id) {
+			this.setId(id);
+		}
+
+		public int getId() {
+			return id;
+		}
+
+		public void setId(int id) {
 			this.id = id;
+		}
+
+		public List<Vertex> getAdjacent() {
+			return adjacent;
+		}
+
+		public void setAdjacent(List<Vertex> adjacent) {
+			this.adjacent = adjacent;
 		}
 	}
 	
@@ -29,7 +45,7 @@ public class Graph {
 	public void addEdge(int source, int dest) {
 		Vertex s = getVertex(source);
 		Vertex d = getVertex(dest);
-		s.adjacent.add(d);
+		s.getAdjacent().add(d);
 	}
 	
 	public boolean hasPathBFS(int source, int destination) { 
@@ -53,9 +69,9 @@ public class Graph {
 				continue;
 			}
 			
-			visited.add(v.id);
+			visited.add(v.getId());
 			
-			for(Vertex neighbor : v.adjacent) {
+			for(Vertex neighbor : v.getAdjacent()) {
 				queue.add(neighbor);
 			}
 		}
@@ -75,14 +91,14 @@ public class Graph {
 	} 
 	
 	public boolean hasPathDFS(Vertex child, Vertex destination, HashSet<Integer> visited) {
-		if(visited.contains(child.id)) {
+		if(visited.contains(child.getId())) {
 			return false;
 		}
-		visited.add(child.id);
+		visited.add(child.getId());
 		if(child == destination) {
 			return true;
 		}
-		for(Vertex v : destination.adjacent) {
+		for(Vertex v : destination.getAdjacent()) {
 			if(hasPathDFS(v, destination, visited)) {
 				return true;
 			}
