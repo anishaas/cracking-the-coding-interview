@@ -11,7 +11,7 @@ public class Q4_3 {
 		if(end < beg) {
 			return null;
 		}
-		int mid = (end - beg)/2;
+		int mid = (beg + end)/2;
 		Node node = new Node(arr[mid]);
 		node.setLeft(buildTree(arr, beg, mid - 1));
 		node.setRight(buildTree(arr, mid + 1, end));
