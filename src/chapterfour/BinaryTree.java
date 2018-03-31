@@ -8,6 +8,7 @@ public class BinaryTree {
 		private int data;
 		private Node left;
 		private Node right; 
+		private Node parent;
 		
 		Node() {
 			
@@ -31,6 +32,14 @@ public class BinaryTree {
 
 		public void setRight(Node right) {
 			this.right = right;
+		}
+
+		public Node getParent() {
+			return this.parent;
+		}
+		
+		public void setParent(Node parent) {
+			this.parent = parent;
 		}
 	}
 
