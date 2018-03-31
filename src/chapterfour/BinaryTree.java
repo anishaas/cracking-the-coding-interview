@@ -13,6 +13,10 @@ public class BinaryTree {
 			
 		}
 
+		public Node(int i) {
+			this.data = i;
+		}
+
 		public Node getLeft() {
 			return left;
 		}
